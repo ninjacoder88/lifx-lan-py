@@ -3,11 +3,11 @@ import PacketSender
 
 #1227133513
 
-def buildEchoRequestPacket(payload):
+def buildDeviceEchoRequestPacket(payload):
     fieldDictionary = {"tagged": 1, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 58}
     return PacketBuilder.buildPacket(fieldDictionary, payload)
 
-def buildGetServicePacket(type):
+def buildDeviceGetServicePacket():
     fieldDictionary = {"tagged": 1, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 2}
     return PacketBuilder.buildPacket(fieldDictionary, "")
 
@@ -15,9 +15,76 @@ def buildGetPacket(type):
     fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": type}
     return PacketBuilder.buildPacket(fieldDictionary, "")
 
+def buildDeviceSetPowerPacket(levelValue):
+    #validate between 0 and 100
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 21}
+    level = int(float(levelValue) / 100) * 65535)
+    payload = "" # need to build payload
+    return PacketBuilder.buildPacket(fieldDictionary, payload)
 
-#packetBytes = buildGetServicePacket(2) #DEVICE_GetService
-#packetBytes = buildEchoRequestPacket("00110011001100110011") #DEVICE_EchoRequest (payload byte array; 64 bytes)
+def buildDeviceSetLabelPacket(labelValue):
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 24}
+    label = labelValue #32 byte string
+    payload = "" # need to build payload
+    return PacketBuilder.buildPacket(fieldDictionary, payload)
+
+def buildDeviceSetLocationPacket(locationValue, labelValue, updatedAtValue):
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 49}
+    location = locationValue #byte array 16
+    label = labelValue #32 byte string
+    updatedAt = updatedAtValue #64 bit int
+    payload = "" # need to build payload
+    return PacketBuilder.buildPacket(fieldDictionary, payload)
+
+def buildDeviceSetGroupPacket(groupValue, labelValue, updatedAtValue):
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 52}
+    group = groupValue #byte array 16
+    label = labelValue #32 byte string
+    updatedAt = updatedAtValue #64 bit int
+    payload = "" # need to build payload
+    return PacketBuilder.buildPacket(fieldDictionary, payload)
+
+def buildLightSetColorPacket(colorValue, durationValue):
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 102}
+    reserved = "00000000" #u8bit-int
+    color = colorValue #HSBK
+    duration = durationValue #u32-bit int
+    payload = "" # need to build payload
+    return PacketBuilder.buildPacket(fieldDictionary, payload)
+
+def buildLightSetWaveformPacket(transientValue, colorValue, periodValue, cyclesValue, skewRationValue, waveformValue):
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 103}
+    reserved = "00000000" #u8bit-int
+    transient = transientValue
+    color = colorValue
+    period = periodValue
+    cycles = cyclesValue
+    skewRatio = skewRatioValue
+    waveform = waveformValue
+    payload = "" # need to build payload
+    return PacketBuilder.buildPacket(fieldDictionary, payload)
+    
+def buildLightSetWaveformOptionPacket():
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 119}
+    payload = "" # need to build payload
+    return PacketBuilder.buildPacket(fieldDictionary, payload)
+
+def buildLightSetPowerPacket(levelValue, durationValue):
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 117}
+    level = levelValue
+    duration = durationValue
+    payload = "" # need to build payload
+    return PacketBuilder.buildPacket(fieldDictionary, payload)
+
+def buildLightSetInfraredPacket(brightnessValue):
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 122}
+    brightness = brightnessValue
+    payload = "" # need to build payload
+    return PacketBuilder.buildPacket(fieldDictionary, payload)
+    
+
+#packetBytes = buildDeviceGetServicePacket() #DEVICE_GetService
+#packetBytes = buildDeviceEchoRequestPacket("00110011001100110011") #DEVICE_EchoRequest (payload byte array; 64 bytes)
 #packetBytes = buildGetPacket(12) #DEVICE_GetHostInfo
 #packetBytes = buildGetPacket(14) #DEVICE_GetHostFirmware
 #packetBytes = buildGetPacket(16) #DEVICE_GetWifiInfo
