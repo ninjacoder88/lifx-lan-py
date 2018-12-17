@@ -1,3 +1,5 @@
+import EndianConverter
+
 def integerToBinary(integer, bitsToOccupy):
     binaryString = bin(integer).replace("0b","").zfill(bitsToOccupy)
     return binaryString
@@ -33,27 +35,6 @@ def buildProtocolHeader(type):
     return protocolHeader
 
 
-def buildPayload():
-    
-    return
-
-
-def convertBinaryPacketToLittleEndian(binaryPacket):
-    littleEndianPacket = ""
-    tempPacket = binaryPacket
-    
-    while(len(tempPacket) > 0):
-        firstByte = tempPacket[0:8]
-        secondByte = tempPacket[8:16]
-        
-        littleEndianPacket += secondByte
-        littleEndianPacket += firstByte
-        
-        tempPacket = tempPacket[16:]
-        
-    return littleEndianPacket
-
-
 def convertBinaryPacketToHexString(binaryPacket):
     hexString = ""
     tempPacket = binaryPacket
@@ -83,7 +64,7 @@ def buildPacket(fieldDictionary, payload):
     protocolHeader = buildProtocolHeader(type)
     
     binaryPacket = frame + frameAddress + protocolHeader
-    littleEndianPacket = convertBinaryPacketToLittleEndian(binaryPacket) + payload #the payload is not always little endian
+    littleEndianPacket = EndianConverter.convert(binaryPacket) + payload #the payload is not always little endian
     hexString = convertBinaryPacketToHexString(littleEndianPacket)
     packetBytes = bytes.fromhex(hexString)
     
