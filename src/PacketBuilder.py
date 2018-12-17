@@ -4,7 +4,7 @@ def integerToBinary(integer, bitsToOccupy):
 
 
 def buildFrame(size, tagged, source):
-    frame_size = integerToBinary(size, 16)
+    frame_size = integerToBinary(size, 16) #size in bytes
     frame_origin = integerToBinary(0, 2)
     frame_tagged = integerToBinary(tagged, 1)
     frame_addressable = integerToBinary(1, 1)
@@ -65,18 +65,18 @@ def convertBinaryPacketToHexString(binaryPacket):
     return hexString
 
 
-def buildPacket(dictionary, payload):
+def buildPacket(fieldDictionary, payload):
     headerSize = 288
     payloadSize = len(payload)
-    packetSize = int((headerSize + payloadSize) / 8)
+    packetSize = int((headerSize + payloadSize) / 8) #8 bits per byte
     
-    tagged = dictionary["tagged"]
-    source = dictionary["source"]
-    target = dictionary["target"]
-    ack = dictionary["ack"]
-    res = dictionary["res"]
-    sequence = dictionary["sequence"]
-    type = dictionary["type"]
+    tagged = fieldDictionary["tagged"]
+    source = fieldDictionary["source"]
+    target = fieldDictionary["target"]
+    ack = fieldDictionary["ack"]
+    res = fieldDictionary["res"]
+    sequence = fieldDictionary["sequence"]
+    type = fieldDictionary["type"]
     
     frame = buildFrame(packetSize, tagged, source)
     frameAddress = buildFrameAddress(target, ack, res, sequence)
