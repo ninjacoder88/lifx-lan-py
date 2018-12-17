@@ -14,3 +14,5 @@ def listenForPackets():
             PacketProcessor.processData(data)
             
     return
+
+listenForPackets()

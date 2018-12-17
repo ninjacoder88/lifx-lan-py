@@ -9,9 +9,18 @@ def destroyPayload(type, payload):
         return ""
     
     if(type == 3):
-        service = convertBinToInt(payload[0:8])
-        port = convertBinToInt(payload[8:40])
+        print(payload)
+        tempPayload = payload + "00000000"
+        service = convertBinToInt(tempPayload[0:8])
+        port = convertBinToInt(tempPayload[8:40])
         print( {"service": service, "port": port} )
+    if(type == 25):
+        label = ""
+        tempPayload = convertBinaryToLittleEndian(payload)
+        while(len(tempPayload) > 0):
+            label += chr(convertBinToInt(tempPayload[0:8]))
+            tempPayload = tempPayload[8:]
+        print( {"label": label} )
     return
 
 def destroyPacket(packet):
@@ -40,10 +49,26 @@ def destroyPacket(packet):
     
     return packet
 
-def convertBigEndianToRawPacket(packet):
+def convertBinaryToLittleEndian(binaryPacket):
+    littleEndianPacket = ""
+    tempPacket = binaryPacket
+    
+    while(len(tempPacket) > 0):
+        firstByte = tempPacket[0:8]
+        secondByte = tempPacket[8:16]
+        
+        littleEndianPacket += secondByte
+        littleEndianPacket += firstByte
+        
+        tempPacket = tempPacket[16:]
+        
+    return littleEndianPacket
+
+
+def convertLittleEndianToBigEndian(binaryString):
     bigEndianPacket = ""
     
-    tempPacket = packet
+    tempPacket = binaryString
     
     while(len(tempPacket) > 0):
         firstByte = tempPacket[0:8]
@@ -56,7 +81,7 @@ def convertBigEndianToRawPacket(packet):
         
     return bigEndianPacket
 
-def convertHexStringToPacket(hexString):
+def convertHexStringToBinary(hexString):
     packet = ""
     tempString = hexString
     
@@ -77,11 +102,11 @@ def processData(data):
     #print(data.hex())
     #print("\n")
     
-    packet = convertHexStringToPacket(hexString)
+    binaryString = convertHexStringToBinary(hexString)
     #print(packet)
     #print("\n")
     
-    rawPacket = convertBigEndianToRawPacket(packet)
+    rawPacket = convertLittleEndianToBigEndian(binaryString)
     #print(rawPacket)
     #print("\n")
     
