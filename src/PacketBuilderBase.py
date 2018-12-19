@@ -63,8 +63,8 @@ def buildPacket(fieldDictionary, payload):
     frameAddress = buildFrameAddress(target, ack, res, sequence)
     protocolHeader = buildProtocolHeader(type)
     
-    binaryPacket = frame + frameAddress + protocolHeader
-    littleEndianPacket = EndianConverter.convert(binaryPacket) + payload #the payload is not always little endian
+    binaryPacketHeader = frame + frameAddress + protocolHeader
+    littleEndianPacket = EndianConverter.convert(binaryPacketHeader) + payload #the payload is not always little endian
     hexString = convertBinaryPacketToHexString(littleEndianPacket)
     packetBytes = bytes.fromhex(hexString)
     
