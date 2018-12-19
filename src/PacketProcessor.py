@@ -72,9 +72,9 @@ def parseLightStateInfrared(payload):
     return result
 
 def parsePayload(type, payload):
-    result = ""
+    result = {"": ""}
     if(payload == ""):
-        result = "No Payload"
+        result = {"": ""}
     if(type == 3):
         result = parseDeviceStateService(payload)
     if(type == 13):
@@ -107,7 +107,8 @@ def parsePayload(type, payload):
         result = parseLightStatePower(payload)
     if(type == 121):
         result = parseLightStateInfrared(payload)
-    print result
+    #print(result)
+    return result
 
 def parsePacket(packet):
     frame_size = convertBinToInt(packet[0:16])
@@ -130,7 +131,7 @@ def parsePacket(packet):
     
     packet = {"size": frame_size, "origin": frame_origin, "tagged": frame_tagged, "addressable": frame_addressable, "protocol": frame_protocol, "source": frame_source,
               "target": frameAddress_target, "far1": frameAddress_reserved1, "far2": frameAddress_reserved2, "ackReq": frameAddress_ackRequired, "resReq": frameAddress_resRequired,
-              "sequence": frameAddress_sequence, "phr1": protocolHeader_reserved1, "type": protocolHeader_type, "phr2": protocolHeader_reserved2}
+              "sequence": frameAddress_sequence, "phr1": protocolHeader_reserved1, "type": protocolHeader_type, "phr2": protocolHeader_reserved2, "payload": payload}
     
     return packet
 
@@ -148,21 +149,13 @@ def convertHexStringToBinary(hexString):
     return packet
 
 def processData(data):
-    #print(data)
-    #print("\n")
-    
     hexString = data.hex()
-    #print(data.hex())
-    #print("\n")
-    
     binaryString = convertHexStringToBinary(hexString)
-    #print(packet)
-    #print("\n")
-    
     rawPacket = EndianConverter.convert(binaryString)
-    #print(rawPacket)
-    #print("\n")
+    packetData = parsePacket(rawPacket)
     
-    rawData = parsePacket(rawPacket)
-    print(rawData)
+    #for k, v in packetData.items():
+    #    print(k, v)
+    
+    print(packetData)
     print("\n")
