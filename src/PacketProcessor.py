@@ -4,7 +4,10 @@ def convertBinToInt(binary):
     return int(binary, 2)
 
 def parseDeviceStateService(payload):
-    result = {"service": "u8-bit int", "port": "u 2-bit int"} 
+    result = {"service": "u8-bit int", "port": "u32-bit int", "bits": payload}
+    #payload = EndianConverter.convert(payload)
+    #port = EndianConverter.convert(payload[8:40])
+    #result = {"service": convertBinToInt(payload[0:8]), "port": convertBinToInt(port)}
     return result
 
 def parseDeviceStateHostInfo(payload):
@@ -22,13 +25,18 @@ def parseDeviceStateWifiFirmware(payload):
     result = {"build": "u64-bit int", "reserved": "u64-bit int", "version": "u32-bit int"}
     return result
 
+def parseDeviceSetPower(payload):
+    level = convertBinToInt(payload)
+    result = {"level": level}
+    return result;
+
 def parseDeviceStatePower(payload):
     result = {"level": "u16-bit int"}
     return result
 
 def parseDeviceStateLabel(payload):
     label = ""
-    tempPayload = convertBinaryToLittleEndian(payload)
+    tempPayload = EndianConverter.convert(payload)
     while(len(tempPayload) > 0):
         label += chr(convertBinToInt(tempPayload[0:8]))
         tempPayload = tempPayload[8:]
@@ -85,6 +93,8 @@ def parsePayload(type, payload):
         result = parseDeviceStateWifiInfo(payload)
     if(type == 19):
         result = parseDeviceStateWifiFirmware(payload)
+    if(type == 21):
+        result = parseDeviceSetPower(payload);
     if(type == 22):
         result = parseDeviceStatePower(payload)
     if(type == 25):
