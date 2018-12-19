@@ -1,4 +1,5 @@
 import PacketBuilderBase
+import EndianConverter
 
 def buildDeviceGetPacket(type):
     fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": type}
@@ -8,11 +9,11 @@ def buildDeviceGetServicePacket():
     fieldDictionary = {"tagged": 1, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 2}
     return PacketBuilderBase.buildPacket(fieldDictionary, "")
 
-def buildDeviceSetPowerPacket(levelValue):
+def buildDeviceSetPowerPacket(source, levelValue):
     #validate between 0 and 100
-    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 21}
-    level = int(float(levelValue) / 100) * 65535
-    payload = "" # need to build payload
+    fieldDictionary = {"tagged": 0, "source": source, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 21}
+    level = int(float(levelValue) / 100 * 65535)
+    payload = EndianConverter.convert(bin(level).replace("0b","").zfill(16))
     return PacketBuilderBase.buildPacket(fieldDictionary, payload)
 
 def buildDeviceSetLabelPacket(labelValue):
@@ -38,7 +39,7 @@ def buildDeviceSetGroupPacket(groupValue, labelValue, updatedAtValue):
     return PacketBuilderBase.buildPacket(fieldDictionary, payload)
 
 def buildDeviceEchoRequestPacket(payload):
-    fieldDictionary = {"tagged": 1, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 58}
+    fieldDictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 58}
     return PacketBuilderBase.buildPacket(fieldDictionary, payload)
 
 def buildLightGetPacket(type):
