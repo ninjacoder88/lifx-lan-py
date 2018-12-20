@@ -79,45 +79,70 @@ def parse_light_state_infrared(payload):
     return result
 
 def process_payload(type, payload):
-    result = {"": ""}
-    #if(payload == ""):
-    #    result = {"": ""}
+    empty_result = {"": ""}
     if(type == 3):
-        result = parse_device_state_service(payload)
+        return parse_device_state_service(payload)
     if(type == 13):
-        result = parse_device_state_host_info(payload)
+        return parse_device_state_host_info(payload)
     if(type == 15):
-        result = parse_device_state_host_firmware(payload)
+        return parse_device_state_host_firmware(payload)
     if(type == 17):
-        result = parse_device_state_wifi_info(payload)
+        return parse_device_state_wifi_info(payload)
     if(type == 19):
-        result = parse_device_state_wifi_firmware(payload)
+        return parse_device_state_wifi_firmware(payload)
     if(type == 21):
-        result = parse_device_set_power(payload);
+        return parse_device_set_power(payload)
     if(type == 22):
-        result = parse_device_state_power(payload)
+        return parse_device_state_power(payload)
+    if(type == 24):
+        #return parse_device_set_label(payload)
+        return empty_result
     if(type == 25):
-        result = parse_device_state_label(payload)      
+        return parse_device_state_label(payload)      
     if(type == 33):
-        result = parse_device_state_version(payload)
+        return parse_device_state_version(payload)
     if(type == 35):
-        result = parse_device_state_info(payload)
+        return parse_device_state_info(payload)
     if(type == 45):
-        result = parse_device_acknowledgement(payload)
+        return parse_device_acknowledgement(payload)
+    if(type == 49):
+        #return parse_device_set_location(payload)
+        return empty_result
     if(type == 50):
-        result = parse_device_state_location(payload)
+        return parse_device_state_location(payload)
     if(type == 52):
-        result = parse_device_state_group(payload)
+        #return parse_device_set_group(payload)
+        return empty_result
+    if(type == 53):
+        return parse_device_state_group(payload)
+    if(type == 58):
+        #return parse_device_echo_request(payload)
+        return empty_result
     if(type == 59):
-        result = parse_device_echo_response(payload)
+        return parse_device_echo_response(payload)
+    if(type == 102):
+        #return parse_light_set_color(payload)
+        return empty_result
+    if(type == 103):
+        #return parse_light_set_waveform(payload)
+        return empty_result
     if(type == 107):
-        result = parse_light_state(payload)
+        return parse_light_state(payload)
+    if(type == 117):
+        #return parse_light_set_power(payload)
+        return empty_result
     if(type == 118):
-        result = parse_light_state_power(payload)
+        return parse_light_state_power(payload)
+    if(type == 119):
+        #return parse_light_set_waveform_optional(payload)
+        return empty_result
     if(type == 121):
-        result = parse_light_state_infrared(payload)
+        return parse_light_state_infrared(payload)
+    if(type == 122):
+        #return pase_light_set_infrared(payload)
+        return empty_result
 
-    return result
+    return empty_result
 
 
 def process_header(header_bits):
