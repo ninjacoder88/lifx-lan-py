@@ -1,7 +1,7 @@
 import PacketReceiver
 
 def receive():
-    PacketReceiver.receivePackets('', 56700)
+    PacketReceiver.receive_packets('', 56700)
     return
 
 receive()
