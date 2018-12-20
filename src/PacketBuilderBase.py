@@ -40,7 +40,7 @@ def convert_binary_packet_to_hex_string(binary_packet):
     hex_string = ""
     temp_packet = binary_packet
     
-    while(len(tempPacket) > 0):
+    while(len(temp_packet) > 0):
         hex_string += hex(int(temp_packet[0:8], 2)).replace("0x", "").zfill(2)
         temp_packet = temp_packet[8:]
         
