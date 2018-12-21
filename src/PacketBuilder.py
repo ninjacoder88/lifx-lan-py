@@ -5,7 +5,7 @@ def build_device_get_packet(type):
     field_dictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": type}
     return PacketBuilderBase.buildPacket(field_dictionary, "")
 
-def build_device_get_service_packet():
+def build_device_get_service_packet():#validated
     field_dictionary = {"tagged": 1, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 2}
     return PacketBuilderBase.buildPacket(field_dictionary, "")
 
@@ -18,7 +18,10 @@ def build_device_get_host_firmware_packet():
 def build_device_get_wifi_info_packet():
     return build_device_get_packet(16)
 
-def build_device_get_poower_packet():
+def build_device_get_wifi_firmware_packet():
+    return build_device_get_packet(18)
+
+def build_device_get_power_packet():
     return build_device_get_packet(20)
 
 def build_device_set_power_packet(source, level_value):
