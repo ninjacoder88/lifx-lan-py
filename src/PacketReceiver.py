@@ -9,6 +9,8 @@ def receive_packets(host, port):
         data_buffer = []
         while True:
             data = s.recvfrom(512)[0]
-            PacketProcessor.process_data(data)
+            result = PacketProcessor.process_data(data)
+            print(result)
+            print("\n")
             
     return
