@@ -1,53 +1,105 @@
 import EndianConverter
+import time
 
-def conver_bin_to_int(binary):
+def bin_to_int(binary):
     return int(binary, 2)
 
-def parse_device_state_service(payload):
-    #result = {"service": "u8-bit int", "port": "u32-bit int", "bits": payload}
-    result = {"service": conver_bin_to_int(payload[0:8]), "port": conver_bin_to_int(EndianConverter.convert(payload[8:24]))}
+def parse_string(bits):
+    label = ""
+    temp_bits = bits
+    while(len(temp_bits) > 0):
+        label += chr(bin_to_int(temp_bits[0:8]))
+        temp_bits = temp_bits[8:]
+    label = label.replace("\x00", "")
+    return label
+
+def parse_time(bits):
+    nanoseconds = bin_to_int(EndianConverter.convert(bits))
+    epoch_time = int(nanoseconds / 1000000000)
+    #time_string = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(epoch_time))
+    return {"nanoseconds": nanoseconds}
+
+def parse_float(bits):
+    swapped_bits = EndianConverter.convert(bits)
+    sign = swapped_bits[0]
+    exponent = bin_to_int(swapped_bits[1:9])
+    fraction = bin_to_int(swapped_bits[9:32]) / 8388607
+    
+    result = exponent + fraction
+    if(sign == 1):
+        result = result * -1
+    return result
+
+def parse_int(bits):
+    return bin_to_int(EndianConverter.convert(bits))
+    
+    
+
+def parse_device_state_service(payload):#validated
+    #result = {"service": "u8-bit int", "port": "u32-bit int"}
+    result = {"service": bin_to_int(payload[0:8]), "port": parse_int(payload[8:24])}
     return result
 
 def parse_device_state_host_info(payload):
-    result = {"signal": "32-bit float", "tx": "u32-bit int", "rx": "u32-bit int", "reserved": "16-bit int", "bits": payload}
+    #result = {"signal": "32-bit float", "tx": "u32-bit int", "rx": "u32-bit int", "reserved": "16-bit int", "bits": payload}
+    signal = parse_float(payload[0:32])
+    tx = parse_int(payload[32:64])
+    rx = parse_int(payload[64:96])
+    result = {"signal": signal, "tx": tx, "rx": rx}
     return result
 
 def parse_device_state_host_firmware(payload):
-    result = {"build": "u64-bit int", "reserved": "u64-bit int", "version": "u32-bit int", "bits": payload}
+    #result = {"build": "u64-bit int", "reserved": "u64-bit int", "version": "u32-bit int", "bits": payload}
+    build = parse_int(payload[0:64])
+    version = parse_int(payload[128:160])
+    result = {"build": build, "version": version}
     return result
 
 def parse_device_state_wifi_info(payload):
-    result = {"signal": "32-bit float", "tx": "u32-bit int", "rx": "u32-bit int", "reserved": "16-bit int", "bits": payload}
+    #result = {"signal": "32-bit float", "tx": "u32-bit int", "rx": "u32-bit int", "reserved": "16-bit int", "bits": payload}
+    signal = parse_float(payload[0:32])
+    tx = parse_int(payload[32:64])
+    rx = parse_int(payload[64:96])
+    result = {"signal": signal, "tx": tx, "rx": rx}
+    return result
 
 def parse_device_state_wifi_firmware(payload):
-    result = {"build": "u64-bit int", "reserved": "u64-bit int", "version": "u32-bit int", "bits": payload}
+    #result = {"build": "u64-bit int", "reserved": "u64-bit int", "version": "u32-bit int", "bits": payload}
+    build = parse_int(payload[0:64])
+    version = parse_int(payload[128:160])
+    result = {"build": build, "version": version}
     return result
 
 def parse_device_set_power(payload):
-    level = conver_bin_to_int(payload)
+    level = bin_to_int(payload)
     result = {"level": level}
     return result;
 
-def parse_device_state_power(payload):
-    #result = {"level": "u16-bit int", "bits": payload}
-    result = {"level": conver_bin_to_int(payload[0:16])}
+def parse_device_state_power(payload):#validated
+    #result = {"level": "u16-bit int"}
+    result = {"level": bin_to_int(payload[0:16])}
     return result
 
-def parse_device_state_label(payload):
-    label = ""
-    tempPayload = payload
-    while(len(tempPayload) > 0):
-        label += chr(conver_bin_to_int(tempPayload[0:8]))
-        tempPayload = tempPayload[8:]
+def parse_device_state_label(payload):#validated
+    #result = {"label": "32 byte string"}
+    label = parse_string(payload)
     result = {"label": label}
     return result
 
 def parse_device_state_version(payload):
-    result = {"vendor": "u32-bit int", "product": "u32-bit int", "version": "u32-bit int", "bits": payload}
+    #result = {"vendor": "u32-bit int", "product": "u32-bit int", "version": "u32-bit int", "bits": payload}
+    vendor = parse_int(payload[0:32])
+    product = parse_int(payload[32:64])
+    version = parse_int(payload[64:96])
+    result =  {"vendor": vendor, "product": product, "version": version}
     return result
 
 def parse_device_state_info(payload):
-    result = {"time": "u64-bit int", "uptime": "u64-bit int", "downtime": "u64-bit int", "bits": payload}
+    #result = {"time": "u64-bit int", "uptime": "u64-bit int", "downtime": "u64-bit int", "bits": payload}
+    time = "lifx-time"
+    uptime = "lifx-time"
+    downtime = "lifx-time"
+    result = {"time": time, "uptime": uptime, "downtime": downtime}
     return result
 
 def parse_device_acknowledgement(payload):
@@ -55,27 +107,48 @@ def parse_device_acknowledgement(payload):
     return result
 
 def parse_device_state_location(payload):
-    result = {"location": "16 bytes byte array", "label": "32 bytes string", "updatedAt": "u64-bit int", "bits": payload}
+    #result = {"location": "16 bytes byte array", "label": "32 bytes string", "updatedAt": "u64-bit int", "bits": payload}
+    location = payload[0:128]#guid
+    label = parse_string(payload[128:384])
+    updated_at = parse_time(payload[384:448])
+    result = {"location": "GUID", "label": label, "updatedAt": updated_at}
     return result
  
 def parse_device_state_group(payload):
-    result = {"group": "16 bytes byte array", "label": "32 bytes string", "updatedAt": "u64-bit int", "bits": payload}
+    #result = {"group": "16 bytes byte array", "label": "32 bytes string", "updatedAt": "u64-bit int", "bits": payload}
+    group = payload[0:128]#guid
+    label = parse_string(payload[128:384])
+    updated_at = parse_time(payload[384:448])
+    result = {"group": "GUID", "label": label, "updatedAt": updated_at}
     return result
 
 def parse_device_echo_response(payload):
+    #result = {"payload": "64 bytes byte array", "bits": payload}
     result = {"payload": "64 bytes byte array", "bits": payload}
     return result
+
               
-def parse_light_state(payload):
-    result = {"color": "HSBK", "reserved": "16-bit int", "power": "u16-bit int", "label": "32 byte string", "reserved2": "u64-bit int", "bits": payload}
+def parse_light_state(payload):#validated
+    #result = {"color": "HSBK", "reserved": "16-bit int", "power": "u16-bit int", "label": "32 byte string", "reserved2": "u64-bit int"}
+    hue = parse_int(payload[0:16])
+    sat = parse_int(payload[16:32])
+    brightness = parse_int(payload[32:48])
+    kelvin = parse_int(payload[48:64])
+    #reserved1 = payload[64:80]
+    power = parse_int(payload[80:96])
+    label = parse_string(payload[96:352])
+    #reserved2 = payload[352:416]
+    result = {"color": {"hue": hue, "saturation": sat, "brightness": brightness, "kelvin": kelvin}, "power": power, "label": label}
     return result
 
-def parse_light_state_power(payload):
-    result = {"level": "u16-bit int", "bits": payload}
+def parse_light_state_power(payload):#validated
+    #result = {"level": "u16-bit int"}
+    result = {"level": bin_to_int(payload[0:16])}
     return result
 
-def parse_light_state_infrared(payload):
-    result = {"brightness": "u16-bit int", "bits": payload}
+def parse_light_state_infrared(payload):#validated
+    #result = {"brightness": "u16-bit int"}
+    result = {"brightness": bin_to_int(payload[0:16])}
     return result
 
 def process_payload(type, payload):
@@ -147,35 +220,30 @@ def process_payload(type, payload):
 
 def process_header(header_bits):
     bits = EndianConverter.convert(header_bits)
-    
-    frame_size = conver_bin_to_int(bits[0:16])
-    frame_origin = conver_bin_to_int(bits[16:18])
-    frame_tagged = conver_bin_to_int(bits[18:19])
-    frame_addressable = conver_bin_to_int(bits[19:20])
-    frame_protocol = conver_bin_to_int(bits[20:32])
-    frame_source = conver_bin_to_int(bits[32:64])
-    frame_address_target = conver_bin_to_int(bits[64:128])
-    frame_address_reserved1 = conver_bin_to_int(bits[128:176])
-    frame_address_reserved2 = conver_bin_to_int(bits[176:182])
-    frame_address_ackRequired = conver_bin_to_int(bits[182:183])
-    frame_address_resRequired = conver_bin_to_int(bits[183:184])
-    frame_address_sequence = conver_bin_to_int(bits[184:192])
-    protocol_header_reserved1 = conver_bin_to_int(bits[192:256])
-    protocol_header_type = conver_bin_to_int(bits[256:272])
-    protocol_header_reserved2 = conver_bin_to_int(bits[272:288])
+
+    frame_size = bin_to_int(bits[0:16])
+    frame_origin = bin_to_int(bits[16:18])
+    frame_tagged = bin_to_int(bits[18:19])
+    frame_addressable = bin_to_int(bits[19:20])
+    frame_protocol = bin_to_int(bits[20:32])
+    frame_source = bin_to_int(bits[32:64])
+    frame_address_target = bin_to_int(bits[64:128])
+    frame_address_reserved1 = bin_to_int(bits[128:176])
+    frame_address_reserved2 = bin_to_int(bits[176:182])
+    frame_address_ackRequired = bin_to_int(bits[182:183])
+    frame_address_resRequired = bin_to_int(bits[183:184])
+    frame_address_sequence = bin_to_int(bits[184:192])
+    protocol_header_reserved1 = bin_to_int(bits[192:256])
+    protocol_header_type = bin_to_int(bits[256:272])
+    protocol_header_reserved2 = bin_to_int(bits[272:288])
     
     target_bits = bits[64:128]
-    if(target_bits[-16:] == "0000000000000000"):
-        frame_address_target = conver_bin_to_int(target_bits[0:48])
+    if(target_bits[-16:] == "".zfill(16)):
+        frame_address_target = bin_to_int(target_bits[0:48])
     
-    header = {"size": frame_size, "origin": frame_origin, "tagged": frame_tagged, "addressable": frame_addressable, "protocol": frame_protocol, "source": frame_source,
-              "target": frame_address_target, "ackReq": frame_address_ackRequired, "resReq": frame_address_resRequired, "sequence": frame_address_sequence, "type": protocol_header_type}
-    
-    #header = {"size": frame_size, "origin": frame_origin, "tagged": frame_tagged, "addressable": frame_addressable, "protocol": frame_protocol, "source": frame_source,
-    #          "target": frame_address_target, "far1": frame_address_reserved1, "far2": frame_address_reserved2, "ackReq": frame_address_ackRequired, "resReq": frame_address_resRequired,
-    #          "sequence": frame_address_sequence, "phr1": protocol_header_reserved1, "type": protocol_header_type, "phr2": protocol_header_reserved2}
-    
-    return header
+    return {"size": frame_size, "origin": frame_origin, "tagged": frame_tagged, "addressable": frame_addressable,
+              "protocol": frame_protocol, "source": frame_source, "target": frame_address_target, "ackReq": frame_address_ackRequired,
+              "resReq": frame_address_resRequired, "sequence": frame_address_sequence, "type": protocol_header_type}
 
 
 def convert_hex_string_to_binary(hex_string):
@@ -197,6 +265,7 @@ def process_data(data):
     header = process_header(binary_string[0:288])
     payload = process_payload(header["type"], binary_string[288:])
     
+    #print(data)
     print(header)
     print(payload)
     print("\n")
