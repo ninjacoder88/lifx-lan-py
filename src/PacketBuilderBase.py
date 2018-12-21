@@ -18,7 +18,7 @@ def build_frame(size, tagged, source):
 
 def build_frame_address(target, ack, res, sequence):
     #frame_address_target = int_to_bin(target, 64)
-    frame_address_target = int_to_bin(target, 48) + "0000000000000000"
+    frame_address_target = int_to_bin(target, 48) + "".zfill(16)
     frame_address_reserved1 = int_to_bin(0, 48)
     frame_address_reserved2 = int_to_bin(0, 6)
     frame_address_ackRequired = int_to_bin(ack, 1)
