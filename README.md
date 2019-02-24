@@ -1,6 +1,8 @@
 # lifx-lan-py
 Python project for controlling lifx lights via LAN
 
+LIFX protocol documentation can be found at: https://lan.developer.lifx.com/docs/introduction
+
 This project exists to demonstrate how to manage LIFX lights with the LAN protocol using Python.
 
 ### How To Run
