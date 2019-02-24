@@ -7,7 +7,7 @@ def int_to_bin(integer_value, bits_to_occupy):
     return binary_string
 
 def string_to_bin(string_value, bits_to_occupy):
-    binary_string = ""
+    binary_string = "".join(format(ord(x), 'b') for x in string_value)
     return binary_string
 
 def float_to_bin(float_value, bits_to_occupy):
