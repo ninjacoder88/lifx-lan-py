@@ -1,5 +1,6 @@
 import socket
 import PacketProcessor
+import datetime
 
 def receive_packets(host, port):
 
@@ -10,6 +11,7 @@ def receive_packets(host, port):
         while True:
             data = s.recvfrom(512)[0]
             result = PacketProcessor.process_data(data)
+            print('{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now()))
             print(result)
             print("\n")
             
