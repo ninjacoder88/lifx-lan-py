@@ -50,6 +50,8 @@ def run():
             packet_bytes = CommandHandler.handle_device_get_version(option_dictionary)
         elif command == "device-get-info":
             packet_bytes = CommandHandler.handle_device_get_info(option_dictionary)
+            elif command == "device-get-location":
+            packet_bytes = CommandHandler.handle_device_get_location(option_dictionary)
         elif command == "device-set-location":
             packet_bytes = CommandHandler.handle_device_set_location(option_dictionary)
         elif command == "device-get-group":
