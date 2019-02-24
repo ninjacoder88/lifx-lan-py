@@ -15,7 +15,7 @@ def parse_string(bits):
 
 def parse_time(format, bits):
     unix_time_stamp_nanoseconds = parse_int(format, bits)
-    epoch_time = int(nanoseconds / 1000000000)
+    epoch_time = int(unix_time_stamp_nanoseconds / 1000000000)
     #time_string = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(epoch_time))
     return epoch_time
 
