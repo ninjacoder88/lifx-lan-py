@@ -24,7 +24,7 @@ def run():
         packet_bytes = ""
         
         if command == "help":
-            CommandHandler.handle_help()
+            CommandHandler.handle_help("")
         elif command == "exit":
             break
         elif command == "device-get-service":
