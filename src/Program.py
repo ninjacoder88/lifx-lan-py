@@ -6,58 +6,74 @@ def run():
     while True:
         user_input = input("Enter a command: ")
         
-        packet_bytes = "";
+        split_user_input = user_input.split()
+    
+        #validate
         
-        if user_input == "help":
+        command = split_user_input[0]
+        options = split_user_input[1:]
+        
+        option_dictionary = {}
+        for option in options:
+            split_option = option.split(":")
+            if len(split_option):
+               opt_dict[split_option[0]] = ""
+            else:
+                opt_dict[split_option[0]] = split_option[1]
+        
+        
+        packet_bytes = ""
+        
+        if command == "help":
             CommandHandler.handle_help()
-        elif user_input == "exit":
+        elif command == "exit":
             break
-        elif user_input.startswith("device-get-service"):
-            packet_bytes = CommandHandler.handle_device_get_service(user_input)
-        elif user_input.startswith("device-get-host-info"):
-            packet_bytes = CommandHandler.handle_device_get_info(user_input)
-        elif user_input.startswith("device-get-host-firmware"):
-            packet_bytes = CommandHandler.handle_device_get_host_firmware(user_input)
-        elif user_input.startswith("device-get-wifi-info"):
-            packet_bytes = CommandHandler.handle_device_get_wifi_info(user_input)
-        elif user_input.startswith("device-get-wifi-firmware"):
-            packet_bytes = CommandHandler.handle_device_get_wifi_firmware(user_input)
-        elif user_input.startswith("device-get-power"):
-            packet_bytes = CommandHandler.handle_device_get_power(user_input)
-        elif user_input.startswith("device-set-power"):
-            packet_bytes = CommandHandler.handle_device_set_power(user_input)
-        elif user_input.startswith("device-get-label"):
-            packet_bytes = CommandHandler.handle_device_get_label(user_input)
-        elif user_input.startswith("device-set-label"):
-            packet_bytes = CommandHandler.handle_device_set_label(user_input)
-        elif user_input.startswith("device-get-version"):
-            packet_bytes = CommandHandler.handle_device_get_version(user_input)
-        elif user_input.startswith("device-get-info"):
-            packet_bytes = CommandHandler.handle_device_get_info(user_input)
-        elif user_input.startswith("device-set-location"):
-            packet_bytes = CommandHandler.handle_device_set_location(user_input)
-        elif user_input.startswith("device-get-group"):
-            packet_bytes = CommandHandler.handle_device_get_group(user_input)
-        elif user_input.startswith("device-set-group"):
-            packet_bytes = CommandHandler.handle_device_set_group(user_input)
-        elif user_input.startswith("device-echo-request"):
-            packet_bytes = CommandHandler.handle_device_echo_request(user_input)
-        elif user_input.startswith("light-get-state"):
-            packet_bytes = CommandHandler.handle_light_get_state(user_input)
-        elif user_input.startswith("light-set-color"):
-            packet_bytes = CommandHandler.handle_light_set_color(user_input)
-        elif user_input.startswith("light-set-waveform"):
-            packet_bytes = CommandHandler.handle_light_set_waveform(user_input)
-        elif user_input.startswith("light-get-power"):
-            packet_bytes = CommandHandler.handle_light_get_power(user_input)
-        elif user_input.startswith("light-set-power"):
-            packet_bytes = CommandHandler.handle_light_set_power(user_input)
-        elif user_input.startswith("light-set-waveform-optional"):
-            packet_bytes = CommandHandler.handle_light_set_waveform_optional(user_input)
-        elif user_input.startswith("light-get-infrared"):
-            packet_bytes = CommandHandler.handle_light_get_infrared(user_input)
-        elif user_input.startswith("light-set-infrared"):
-            packet_bytes = CommandHandler.handle_light_set_infrared(user_input)
+        elif command == "device-get-service":
+            packet_bytes = CommandHandler.handle_device_get_service(option_dictionary)
+        elif command == "device-get-host-info":
+            packet_bytes = CommandHandler.handle_device_get_info(option_dictionary)
+        elif command == "device-get-host-firmware":
+            packet_bytes = CommandHandler.handle_device_get_host_firmware(option_dictionary)
+        elif command == "device-get-wifi-info":
+            packet_bytes = CommandHandler.handle_device_get_wifi_info(option_dictionary)
+        elif command == "device-get-wifi-firmware":
+            packet_bytes = CommandHandler.handle_device_get_wifi_firmware(option_dictionary)
+        elif command == "device-get-power":
+            packet_bytes = CommandHandler.handle_device_get_power(option_dictionary)
+        elif command == "device-set-power":
+            packet_bytes = CommandHandler.handle_device_set_power(option_dictionary)
+        elif command == "device-get-label":
+            packet_bytes = CommandHandler.handle_device_get_label(option_dictionary)
+        elif command == "device-set-label":
+            packet_bytes = CommandHandler.handle_device_set_label(option_dictionary)
+        elif command == "device-get-version":
+            packet_bytes = CommandHandler.handle_device_get_version(option_dictionary)
+        elif command == "device-get-info":
+            packet_bytes = CommandHandler.handle_device_get_info(option_dictionary)
+        elif command == "device-set-location":
+            packet_bytes = CommandHandler.handle_device_set_location(option_dictionary)
+        elif command == "device-get-group":
+            packet_bytes = CommandHandler.handle_device_get_group(option_dictionary)
+        elif command == "device-set-group":
+            packet_bytes = CommandHandler.handle_device_set_group(option_dictionary)
+        elif command == "device-echo-request":
+            packet_bytes = CommandHandler.handle_device_echo_request(option_dictionary)
+        elif command == "light-get-state":
+            packet_bytes = CommandHandler.handle_light_get_state(option_dictionary)
+        elif command == "light-set-color":
+            packet_bytes = CommandHandler.handle_light_set_color(option_dictionary)
+        elif command == "light-set-waveform":
+            packet_bytes = CommandHandler.handle_light_set_waveform(option_dictionary)
+        elif command == "light-get-power":
+            packet_bytes = CommandHandler.handle_light_get_power(option_dictionary)
+        elif command == "light-set-power":
+            packet_bytes = CommandHandler.handle_light_set_power(option_dictionary)
+        elif command == "light-set-waveform-optional":
+            packet_bytes = CommandHandler.handle_light_set_waveform_optional(option_dictionary)
+        elif command == "light-get-infrared":
+            packet_bytes = CommandHandler.handle_light_get_infrared(option_dictionary)
+        elif command == "light-set-infrared":
+            packet_bytes = CommandHandler.handle_light_set_infrared(option_dictionary)
         else:
             print("invalid command. type help for availble commands")
         
