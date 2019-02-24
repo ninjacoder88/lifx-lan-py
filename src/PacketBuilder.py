@@ -41,9 +41,9 @@ def build_device_get_wifi_firmware_packet():
 def build_device_get_power_packet():
     return build_device_get_packet(20)
 
-def build_device_set_power_packet(source, level_value):
+def build_device_set_power_packet(source, target, level_value):
     #validate 0 or 100
-    field_dictionary = {"tagged": 0, "source": source, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 21}
+    field_dictionary = {"tagged": 0, "source": source, "target": target, "ack": 0, "res": 0, "sequence": 0, "type": 21}
     level = int_to_bin(int(float(level_value) / 100 * 65535), 16)#unsigned 16 bit integer (0 or 65535)
     payload = level
     return PacketBuilderBase.buildPacket(field_dictionary, payload)
@@ -96,15 +96,15 @@ def build_light_get_packet(type):
 def build_light_get_state_packet():
     return build_light_get_packet(101)
 
-def build_light_set_color_packet(hue_value, sat_value, brightness_value, kelvin_value, duration_value):
-    field_dictionary = {"tagged": 0, "source": 0, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 102}
+def build_light_set_color_packet(target, hue_value, sat_value, brightness_value, kelvin_value, duration_value):
+    field_dictionary = {"tagged": 0, "source": 0, "target": target, "ack": 0, "res": 0, "sequence": 0, "type": 102}
     reserved = "".zfill(8) #unsigned 8 bit integer 
     hue = int_to_bin(hue_value, 16)#unsigned 16 bit integer (0-65535)
     saturation = int_to_bin(sat_value, 16)#unsigned 16 bit integer (0-65535)
     brightness = int_to_bin(brightness_value, 16)#unsigned 16 bit integer (0-65535)
     kelvin = int_to_bin(kelvin_value, 16)#unsigned 16 bit integer (2500-9000)
     duration = int_to_bin(duration_value, 32)#unsigned 32 bit integer (transition in milliseconds)
-    payload = reserved + hue + saturation + brightness + kelving + duration
+    payload = reserved + hue + saturation + brightness + kelvin + duration
     return PacketBuilderBase.buildPacket(field_dictionary, payload)
 
 def build_ligth_set_waveform_packet(source, transient_value, hue_value, sat_value, brightness_value, kelvin_value, period_value, cycles_value, skew_ration_value, waveform_value):
@@ -125,8 +125,8 @@ def build_ligth_set_waveform_packet(source, transient_value, hue_value, sat_valu
 def build_light_get_power_packet():
     return build_light_get_packet(116)
 
-def build_light_set_power_packet(source, level_value, duration_value):
-    field_dictionary = {"tagged": 0, "source": source, "target": 0, "ack": 0, "res": 0, "sequence": 0, "type": 117}
+def build_light_set_power_packet(source, target, level_value, duration_value):
+    field_dictionary = {"tagged": 0, "source": source, "target": target, "ack": 0, "res": 0, "sequence": 0, "type": 117}
     level = int_to_bin(level_value, 16)#unsigned 16 bit integer (0 or 65535)
     duration = int_to_bin(duration_value, 32)#unsigned 32 bit integer (transition in milliseconds)
     payload = level + duration
