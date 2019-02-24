@@ -45,6 +45,7 @@ This project exists to demonstrate how to manage LIFX lights with the LAN protoc
 
 ### How to Contribute
 - Request contributor
+- Submit issue
 - Clone the repository
 - Create branch
 - Make changes on branch
