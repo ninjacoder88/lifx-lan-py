@@ -1,28 +1,20 @@
 import PacketBuilder
+import CommandHandlerHelp
 
-def handle_help():
+def handle_help(command):
+    CommandHandlerHelp.handle_help(command)
     return ""
 
 def handle_device_get_service(options):
-    available_options = {
-        "-help": "provides help document"
-        }
-
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-service")
         return ""
     else:
         return PacketBuilder.build_device_get_service_packet()
     
 def handle_device_get_host_info(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-host")
         return ""
     
     if "-a" in options:
@@ -35,14 +27,8 @@ def handle_device_get_host_info(options):
         return ""
 
 def handle_device_get_host_firmware(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-host-firmware")
         return ""
     
     if "-a" in options:
@@ -55,14 +41,8 @@ def handle_device_get_host_firmware(options):
         return ""
 
 def handle_device_get_wifi_info(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-wifi-info")
         return ""
     
     if "-a" in options:
@@ -75,14 +55,8 @@ def handle_device_get_wifi_info(options):
         return ""
 
 def handle_device_get_wifi_firmware(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-wifi-firmware")
         return ""
     
     if "-a" in options:
@@ -95,14 +69,8 @@ def handle_device_get_wifi_firmware(options):
         return ""
 
 def handle_device_get_power(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-power")
         return ""
     
     if "-a" in options:
@@ -115,15 +83,8 @@ def handle_device_get_power(options):
         return ""
 
 def handle_device_set_power(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        "-l:Level": "power level, must be 0 or 1"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-set-power")
         return ""
     
     level = -1
@@ -143,14 +104,8 @@ def handle_device_set_power(options):
         return ""
 
 def handle_device_get_label(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-label")
         return ""
     
     if "-a" in options:
@@ -163,15 +118,8 @@ def handle_device_get_label(options):
         return ""
 
 def handle_device_set_label(options):#need to validate
-    available_options = {
-        "-help": "provides help document",
-        #"-a": "all devices", probably dont support changing all labels to same
-        "-t:Target": "target device mac address",
-        "-l:Label": "new device text"
-        }
-
     if "-help" in options:
-        print(available_options)
+        handle_help("device-set-label")
         return ""
     
     label = "N/A"
@@ -189,14 +137,8 @@ def handle_device_set_label(options):#need to validate
         return ""
 
 def handle_device_get_version(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-version")
         return ""
     
     if "-a" in options:
@@ -209,14 +151,8 @@ def handle_device_get_version(options):
         return ""
 
 def handle_device_get_info(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-info")
         return ""
     
     if "-a" in options:
@@ -229,14 +165,8 @@ def handle_device_get_info(options):
         return ""
 
 def handle_device_get_location(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-location")
         return ""
     
     if "-a" in options:
@@ -249,16 +179,10 @@ def handle_device_get_location(options):
         return ""
 
 def handle_device_set_location(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        "-l:Label": "new location text" 
-        }
     print("not yet implemented")
     
     #if "-help" in options:
-    #    print(available_options)
+    #    handle_help("device-set-location")
     #    return ""
     
     #if "-a" in options:
@@ -275,14 +199,8 @@ def handle_device_set_location(options):
     #PacketBuilder.build_device_set_location_packet(target, location_value, label_value, updated_at_value)
 
 def handle_device_get_group(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-get-group")
         return ""
     
     if "-a" in options:
@@ -295,12 +213,6 @@ def handle_device_get_group(options):
         return ""
 
 def handle_device_set_group(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        "-l:Label": "new group text"
-        }
     print("not yet implemented")
     
     #if "-help" in options:
@@ -327,15 +239,8 @@ def handle_device_set_group(options):
     #PacketBuilder.build_device_set_group_packet(target, group_value, label_value, update_at_value)
 
 def handle_device_echo_request(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        }
-    print("not yet implemented")
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("device-echo-request")
         return ""
     
     payload = "101010101010101"
@@ -350,15 +255,8 @@ def handle_device_echo_request(options):
         return ""
 
 def handle_light_get_state(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-    print("not yet implemented")
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("light-get-state")
         return ""
     
     if "-a" in options:
@@ -371,19 +269,8 @@ def handle_light_get_state(options):
         return ""
 
 def handle_light_set_color(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        "-h:Hue": "hue (0-360)",
-        "-s:Saturation": "saturation (0-100)",
-        "-b:Brightness": "brightness (0-100)",
-        "-k:Kelvin": "kelvin (2500-9000)"
-        }
-    #print("not yet implemented")
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("light-set-color")
         return ""
     
     hue = -1
@@ -428,15 +315,10 @@ def handle_light_set_color(options):
         return ""
 
 def handle_light_set_waveform(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        }
     print("not yet implemented")
     
     #if "-help" in options:
-    #    print(available_options)
+    #    handle_help("light-set-waveform")
     #    return ""
     #else:
     #    print("invalid options. use -help to see usage")
@@ -445,14 +327,8 @@ def handle_light_set_waveform(options):
     #PacketBuilder.build_ligth_set_waveform_packet(target, transient_value, hue_value, sat_value, brightness_value, kelvin_value, period_value, cycles_value, skew_ration_value, waveform_value)
 
 def handle_light_get_power(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address"
-        }
-
     if "-help" in options:
-        print(available_options)
+        handle_help("light-get-power")
         return ""
     
     if "-a" in options:
@@ -465,16 +341,8 @@ def handle_light_get_power(options):
         return ""
 
 def handle_light_set_power(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        "-l:Level": "power level, must be 0 or 1"
-        }
-    print("not yet implemented")
-    
     if "-help" in options:
-        print(available_options)
+        handle_help("light-set-power")
         return ""
     
     level = -1
@@ -494,15 +362,10 @@ def handle_light_set_power(options):
         return ""
 
 def handle_light_set_waveform_optional(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        }
     print("not yet implemented")
     
     #if "-help" in options:
-    #    print(available_options)
+    #    handle_help("light-set-waveform-optional")
     #    return ""
     #else:
     #    print("invalid options. use -help to see usage")
@@ -511,15 +374,10 @@ def handle_light_set_waveform_optional(options):
     #PacketBuilder.build_light_set_waveform_optional_packet(target, transient_value, hue_value, sat_value, brightness_value, kelvin_value, period_value, cycles_value, skew_ration_value, waveform_value, set_hue_value, set_sat_value, set_brightness_value, set_kelvin_value)build_light_set_power_packet(source, target, level_value, duration_value)
 
 def handle_light_get_infrared(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        }
     print("not yet implemented")
     
     #if "-help" in options:
-    #    print(available_options)
+    #    handle_help("light-get-infrared")
     #    return ""
     #else:
     #    print("invalid options. use -help to see usage")
@@ -528,15 +386,10 @@ def handle_light_get_infrared(options):
     #PacketBuilder.build_light_get_infrared_packet(target)
 
 def handle_light_set_infrared(options):
-    available_options = {
-        "-help": "provides help document",
-        "-a": "all devices",
-        "-t:Target": "target device mac address",
-        }
     print("not yet implemented")
     
     #if "-help" in options:
-    #    print(available_options)
+    #    handle_help("light-set-infrared")
     #    return ""
     #else:
     #    print("invalid options. use -help to see usage")
