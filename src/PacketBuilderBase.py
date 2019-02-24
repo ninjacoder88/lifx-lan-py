@@ -1,37 +1,37 @@
 import EndianConverter
 
-def integer_to_binary(integer, bits_to_occupy):
+def int_to_bin(integer, bits_to_occupy):
     binary_string = bin(integer).replace("0b","").zfill(bits_to_occupy)
     return binary_string
 
 
 def build_frame(size, tagged, source):
-    frame_size = integer_to_binary(size, 16) #size in bytes
-    frame_origin = integer_to_binary(0, 2)
-    frame_tagged = integer_to_binary(tagged, 1)
-    frame_addressable = integer_to_binary(1, 1)
-    frame_protocol = integer_to_binary(1024, 12)
-    frame_source = integer_to_binary(source, 32)
+    frame_size = int_to_bin(size, 16) #size in bytes
+    frame_origin = int_to_bin(0, 2)
+    frame_tagged = int_to_bin(tagged, 1)
+    frame_addressable = int_to_bin(1, 1)
+    frame_protocol = int_to_bin(1024, 12)
+    frame_source = int_to_bin(source, 32)
     frame = frame_size + frame_origin + frame_tagged + frame_addressable + frame_protocol + frame_source
     return frame
 
 
 def build_frame_address(target, ack, res, sequence):
-    #frame_address_target = integer_to_binary(target, 64)
-    frame_address_target = integer_to_binary(target, 48) + "0000000000000000"
-    frame_address_reserved1 = integer_to_binary(0, 48)
-    frame_address_reserved2 = integer_to_binary(0, 6)
-    frame_address_ackRequired = integer_to_binary(ack, 1)
-    frame_address_resRequired = integer_to_binary(res, 1)
-    frame_address_sequence = integer_to_binary(sequence, 8)
+    #frame_address_target = int_to_bin(target, 64)
+    frame_address_target = int_to_bin(target, 48) + "".zfill(16)
+    frame_address_reserved1 = int_to_bin(0, 48)
+    frame_address_reserved2 = int_to_bin(0, 6)
+    frame_address_ackRequired = int_to_bin(ack, 1)
+    frame_address_resRequired = int_to_bin(res, 1)
+    frame_address_sequence = int_to_bin(sequence, 8)
     frame_address = frame_address_target + frame_address_reserved1 + frame_address_reserved2 + frame_address_ackRequired + frame_address_resRequired + frame_address_sequence
     return frame_address
 
 
 def build_protocol_header(type):
-    protocol_header_reserved1 = integer_to_binary(0, 64)
-    protocol_header_type = integer_to_binary(type, 16)
-    protocol_header_reserved2 = integer_to_binary(0, 16)
+    protocol_header_reserved1 = int_to_bin(0, 64)
+    protocol_header_type = int_to_bin(type, 16)
+    protocol_header_reserved2 = int_to_bin(0, 16)
     protocol_header = protocol_header_reserved1 + protocol_header_type + protocol_header_reserved2
     return protocol_header
 
