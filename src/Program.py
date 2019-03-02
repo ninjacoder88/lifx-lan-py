@@ -12,7 +12,7 @@ def run():
         
         command = split_user_input[0]
         options = split_user_input[1:]
-        
+
         option_dictionary = {}
         for option in options:
             split_option = option.split(":")
@@ -78,7 +78,7 @@ def run():
         else:
             print("invalid command. type help for availble commands")
         
-        print();
+        print()
 
         if packet_bytes == "":
             continue

@@ -180,7 +180,7 @@ def handle_device_get_location(options):
 
 def handle_device_set_location(options):
     print("not yet implemented")
-    
+    return ""
     #if "-help" in options:
     #    handle_help("device-set-location")
     #    return ""
@@ -214,6 +214,7 @@ def handle_device_get_group(options):
 
 def handle_device_set_group(options):
     print("not yet implemented")
+    return ""
     
     #if "-help" in options:
     #    print(available_options)
@@ -316,7 +317,7 @@ def handle_light_set_color(options):
 
 def handle_light_set_waveform(options):
     print("not yet implemented")
-    
+    return ""
     #if "-help" in options:
     #    handle_help("light-set-waveform")
     #    return ""
@@ -363,7 +364,7 @@ def handle_light_set_power(options):
 
 def handle_light_set_waveform_optional(options):
     print("not yet implemented")
-    
+    return ""
     #if "-help" in options:
     #    handle_help("light-set-waveform-optional")
     #    return ""
@@ -375,7 +376,7 @@ def handle_light_set_waveform_optional(options):
 
 def handle_light_get_infrared(options):
     print("not yet implemented")
-    
+    return ""
     #if "-help" in options:
     #    handle_help("light-get-infrared")
     #    return ""
@@ -387,7 +388,7 @@ def handle_light_get_infrared(options):
 
 def handle_light_set_infrared(options):
     print("not yet implemented")
-    
+    return ""
     #if "-help" in options:
     #    handle_help("light-set-infrared")
     #    return ""
