@@ -1,6 +1,7 @@
 import sys
 import PacketBroadcaster
 import CommandHandler
+import traceback
 
 def run():
     while True:
@@ -84,5 +85,11 @@ def run():
             continue
         else:
             PacketBroadcaster.broadcast_packet("172.16.10.255", 56700, packet_bytes)
-            
-run()
+
+ 
+try:
+    run()
+except Exception as ex:
+    traceback.print_exc()
+    input("Press enter to end")
+
