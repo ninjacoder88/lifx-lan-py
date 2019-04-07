@@ -12,26 +12,25 @@ def run():
         
         command = split_user_input[0]
         options = split_user_input[1:]
-        
+
         option_dictionary = {}
         for option in options:
             split_option = option.split(":")
-            if len(split_option):
-               opt_dict[split_option[0]] = ""
+            if len(split_option) == 1:
+                option_dictionary[split_option[0]] = ""
             else:
-                opt_dict[split_option[0]] = split_option[1]
-        
+                option_dictionary[split_option[0]] = split_option[1]
         
         packet_bytes = ""
         
         if command == "help":
-            CommandHandler.handle_help()
+            CommandHandler.handle_help("")
         elif command == "exit":
             break
         elif command == "device-get-service":
             packet_bytes = CommandHandler.handle_device_get_service(option_dictionary)
         elif command == "device-get-host-info":
-            packet_bytes = CommandHandler.handle_device_get_info(option_dictionary)
+            packet_bytes = CommandHandler.handle_device_get_host_info(option_dictionary)
         elif command == "device-get-host-firmware":
             packet_bytes = CommandHandler.handle_device_get_host_firmware(option_dictionary)
         elif command == "device-get-wifi-info":
@@ -50,7 +49,7 @@ def run():
             packet_bytes = CommandHandler.handle_device_get_version(option_dictionary)
         elif command == "device-get-info":
             packet_bytes = CommandHandler.handle_device_get_info(option_dictionary)
-            elif command == "device-get-location":
+        elif command == "device-get-location":
             packet_bytes = CommandHandler.handle_device_get_location(option_dictionary)
         elif command == "device-set-location":
             packet_bytes = CommandHandler.handle_device_set_location(option_dictionary)
@@ -79,7 +78,7 @@ def run():
         else:
             print("invalid command. type help for availble commands")
         
-        print();
+        print()
 
         if packet_bytes == "":
             continue

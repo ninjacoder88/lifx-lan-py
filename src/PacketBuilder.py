@@ -7,7 +7,7 @@ def int_to_bin(integer_value, bits_to_occupy):
     return binary_string
 
 def string_to_bin(string_value, bits_to_occupy):
-    binary_string = ""
+    binary_string = "".join(format(ord(x), 'b') for x in string_value)
     return binary_string
 
 def float_to_bin(float_value, bits_to_occupy):
@@ -19,7 +19,7 @@ def time_to_bin(time_value, bits_to_occupy):
     return binary_string
 
 def build_standard_get_packet(target, type, payload):
-    field_dictionary = {"tagged": 0, "source": 0, "target": target, "ack": 0, "res": 0, "sequence": 0, "type": type}
+    field_dictionary = {"tagged": 0, "source": 0, "target": target, "ack": 0, "res": 1, "sequence": 0, "type": type}
     return PacketBuilderBase.buildPacket(field_dictionary, payload)
 
 #####DEVICE MESSAGES#####
@@ -43,8 +43,8 @@ def build_device_get_power_packet(target):
     return build_standard_get_packet(target, 20, "")
 
 def build_device_set_power_packet(target, level_value):
-    #validate 0 or 1
-    level = int_to_bin(level_value * 65535)#unsigned 16 bit integer (0 or 65535)
+    #validate 0 or 65535
+    level = int_to_bin(level_value, 16)#unsigned 16 bit integer (0 or 65535)
     payload = level
     return build_standard_get_packet(target, 21, payload)
 
@@ -52,6 +52,7 @@ def build_device_get_label_packet(target):
     return build_standard_get_packet(target, 23, "")
 
 def build_device_set_label_packet(target, label_value):
+    #validate not empty
     label = string_to_bin(label_value, 256)#32 byte string
     payload = label
     return build_standard_get_packet(target, 24, payload)
@@ -66,6 +67,7 @@ def build_device_get_location_packet(target):
     return build_standard_get_packet(target, 48, "")
 
 def build_device_set_location_packet(target, location_value, label_value, updated_at_value):
+    #validate
     location = location_value #byte array of 16 bytes
     label = string_to_bin(label_value, 256)#32 byte string
     updated_at = time_to_bin(updated_at_value, 64)#unsigned 64 bit integer
@@ -76,18 +78,19 @@ def build_device_get_group_packet(target):
     return build_device_get_packet(target, 51, "")
 
 def build_device_set_group_packet(target, group_value, label_value, update_at_value):
+    #validate
     group = group_value #byte array of 16 bytes
     label = string_to_bin(label_value, 256)#32 byte string
     updated_at = time_to_bin(update_at_value, 64)#unsigned 64 bit integer
     payload = group + label + updated_at
     return build_standard_get_packet(target, 52, payload)
 
-def build_device_echo_request_packet(payload):
-    return build_standard_get_packet(0, 58, payload)
+def build_device_echo_request_packet(target, payload):
+    return build_standard_get_packet(target, 58, payload)
 
 #####LIGHT MESSAGES#####
-def build_light_get_state_packet():
-    return build_standard_get_packet(0, 101, "")
+def build_light_get_state_packet(target):
+    return build_standard_get_packet(target, 101, "")
 
 def build_light_set_color_packet(target, hue_value, sat_value, brightness_value, kelvin_value, duration_value):
     #int(float(level_value) / 100 * 65535)

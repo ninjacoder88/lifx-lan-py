@@ -248,6 +248,7 @@ def process_header(header_bits):
     target_bits = bits[64:128]
     if(target_bits[-16:] == "".zfill(16)):
         frame_address_target = BitParser.bin_to_int(target_bits[0:48])
+        #frame_address_target = BitParser.parse_string(target_bits[0:48])
     
     return {"size": frame_size, "origin": frame_origin, "tagged": frame_tagged, "addressable": frame_addressable,
               "protocol": frame_protocol, "source": frame_source, "target": frame_address_target, "ackReq": frame_address_ackRequired,
