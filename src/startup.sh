@@ -1,3 +1,3 @@
 #!/bin/bash
-python ./mysite/manage.py migrate
-python ./mysite/manage.py runserver 0:8000
+python ./lifxapp/manage.py migrate
+python ./lifxapp/manage.py runserver 0:8000
