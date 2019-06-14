@@ -1,0 +1,7 @@
+docker build -t lifx .
+docker run -d -p 8000:8000 lifx
+
+
+docker rmi $(docker images -a -q)
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
